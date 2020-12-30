@@ -8,6 +8,7 @@ public struct Node
     public int row;
     public int col;
     public int travelCost;
+    public int cellValue;
     public Node(Vector3 newPos, int currRow, int currCol, int currTravelCost)
         {
             pos = newPos;
@@ -32,8 +33,9 @@ public class FlowField : MonoBehaviour
     private Vector3 m_GridSize;
     private int m_AmountOfRows;
     private int m_AmountOfCols;
+    private Node m_EndNode;
 
- 
+
     private void Start()
     {
         m_GridSize = m_Plane.GetComponent<Renderer>().bounds.size;
@@ -59,7 +61,7 @@ public class FlowField : MonoBehaviour
         {
             for (int j = 0; j < m_AmountOfCols; j++)
             {
-                Vector3 currNodePos = new Vector3((-m_GridSize.x / 2 ) + (m_NodeSize * j + m_NodeSize / 2), 0, (-m_GridSize.z / 2) + (m_NodeSize * i + m_NodeSize / 2)); //extra offset added so cells dont overlap
+                Vector3 currNodePos = new Vector3((-m_GridSize.x / 2) + (m_NodeSize * j + m_NodeSize / 2), 0, (-m_GridSize.z / 2) + (m_NodeSize * i + m_NodeSize / 2)); //extra offset added so cells dont overlap
                 m_FlowFieldGrid[i, j] = new Node(currNodePos, i, j, 1);
                 Debug.Log("Node created with index");
                 Debug.Log(i);
@@ -76,7 +78,7 @@ public class FlowField : MonoBehaviour
     private void InitCostField()
     {
 
-        int layer = LayerMask.GetMask("Mud","Water","Obstacle");
+        int layer = LayerMask.GetMask("Mud", "Water", "Obstacle");
         //Only need colliders not full objects
         //GameObject[] gameObjectsWithLayers = FindGameObjectsInLayer(layer);
         Quaternion indentityQuat = new Quaternion(1, 0, 0, 0);
@@ -85,14 +87,14 @@ public class FlowField : MonoBehaviour
         {
             for (int j = 0; j < m_AmountOfCols; j++)
             {
-        
+
 
                 Node currNode = m_FlowFieldGrid[i, j];
                 //https://docs.unity3d.com/ScriptReference/Physics.OverlapBox.html
-                Collider[] terrainLayers = Physics.OverlapBox(currNode.pos, Vector3.one * (m_NodeSize/2), indentityQuat, layer);
-                foreach(Collider collider in terrainLayers)
+                Collider[] terrainLayers = Physics.OverlapBox(currNode.pos, Vector3.one * (m_NodeSize / 2), indentityQuat, layer);
+                foreach (Collider collider in terrainLayers)
                 {
-                    if(collider.gameObject.layer == 8)
+                    if (collider.gameObject.layer == 8)
                     {
                         //Mud == slightly higher cost
                         m_FlowFieldGrid[i, j].travelCost = 5;
@@ -134,6 +136,71 @@ public class FlowField : MonoBehaviour
         }
         return gameObjectsList.ToArray();
     }
+
+    //IntegrationField
+    //https://leifnode.com/2013/12/flow-field-pathfinding/
+    public void InitIntegrationField()
+    {
+        //List<Node> openList = new List<Node>();
+        //openList.Add(m_EndNode);
+
+        Queue<Node> openList = new Queue<Node>();
+        openList.Enqueue(m_EndNode);
+        List<Node> connectedNodes;
+        
+        while (openList.Count != 0)
+        {
+            //get last cell in queue
+            Node currNode = openList.Dequeue();
+            connectedNodes = GetConnectedNodes(currNode, false);
+            for (int i = 0; i < connectedNodes.Count; i++)
+            {
+                
+            }
+        }
+    }
+
+    private List<Node> GetConnectedNodes(Node centerNode, bool isConnectedDiagonal)
+    {
+        List<Node> connectedNodes = new List<Node>();
+        List<Vector2Int> connections = new List<Vector2Int>();
+        //Up
+        connections.Add(new Vector2Int(0, 1));
+        //Right
+        connections.Add(new Vector2Int(1, 0));
+        //Down
+        connections.Add(new Vector2Int(0, -1));
+        //Left
+        connections.Add(new Vector2Int(-1, 0));
+        if(isConnectedDiagonal)
+        {
+            //UpRight
+            connections.Add(new Vector2Int(1, 1));
+            //DownRight
+            connections.Add(new Vector2Int(1, -1));
+            //DownLeft
+            connections.Add(new Vector2Int(-1, -1));
+            //UpLeft
+            connections.Add(new Vector2Int(-1, 1));
+        }
+
+        for (int i = 0; i < connections.Count; i++)
+        {
+            Vector2Int currIdx = new Vector2Int(centerNode.row, centerNode.col);
+            Vector2Int connectedNodeIdx = currIdx + connections[i];
+
+            //check if node is outside grid, if so, skip this direction
+            if(connectedNodeIdx.x < 0 || connectedNodeIdx.y < 0 || connectedNodeIdx.x > m_AmountOfRows || connectedNodeIdx.y > m_AmountOfCols)
+            {
+                continue;
+            }
+            connectedNodes.Add(m_FlowFieldGrid[connectedNodeIdx.x, connectedNodeIdx.y]);
+        }
+
+        return connectedNodes;
+    }
+
+
 
     //------------------------DEBUGGING---------------------------
     private void OnDrawGizmos()
