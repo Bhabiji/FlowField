@@ -1,0 +1,27 @@
+DOTS
+https://unity.com/dots
+	Keynote
+	https://www.youtube.com/watch?v=Wxm2frKYNYg&feature=emb_title&ab_channel=Unity
+	Packages
+	https://unity.com/dots/packages
+	!!!!!ECS!!!!!
+	https://docs.unity3d.com/Packages/com.unity.entities@0.16/manual/index.html
+	https://www.youtube.com/watch?v=2P28r8SBXrA&ab_channel=InfallibleCode
+	https://www.youtube.com/watch?v=ILfUuBLfzGI&list=PLzDRvYVwl53s40yP5RQXitbT--IRcHqba&ab_channel=CodeMonkey
+	https://www.youtube.com/watch?v=Z9-WkwdDoNY&list=PLzDRvYVwl53s40yP5RQXitbT--IRcHqba&index=3&ab_channel=CodeMonkey
+		Entities
+			Creating gameplay
+			https://docs.unity3d.com/Packages/com.unity.entities@0.2/manual/gp_overview.html
+
+
+
+Dynamic buffer research
+https://docs.unity3d.com/Packages/com.unity.entities@0.0/manual/dynamic_buffers.html#:~:text=A%20DynamicBuffer%20is%20a%20type,the%20internal%20capacity%20is%20exhausted.
+https://www.youtube.com/watch?v=XC84bc95heI&ab_channel=CodeMonkey
+
+Flowfields basics
+https://howtorts.github.io/2014/01/04/basic-flow-fields.html
+
+cost field
+https://leifnode.com/2013/12/flow-field-pathfinding/
+
