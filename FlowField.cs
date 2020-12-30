@@ -9,6 +9,7 @@ public class Node
     public int col;
     public int travelCost;
     public int nodeValue;
+    public Vector3 directionToEndNode;
 
     public Node(Vector3 newPos, int currRow, int currCol, int currTravelCost)
         {
@@ -29,6 +30,8 @@ public class FlowField : MonoBehaviour
     GameObject m_Plane;
     [SerializeField]
     private bool m_Debug;
+    [SerializeField]
+    private Sprite m_DebugSprite;
 
 
     private Node[,] m_FlowFieldGrid;
@@ -36,6 +39,7 @@ public class FlowField : MonoBehaviour
     private int m_AmountOfRows;
     private int m_AmountOfCols;
     private Node m_EndNode;
+    private List<GameObject> m_DebugSprites = new List<GameObject>();
 
 
     private void Start()
@@ -62,10 +66,12 @@ public class FlowField : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            ResetNodeDirections();
             InitGrid();
             InitCostField();
             HandleInput();
-
+            CalculateNodeDirections();
+            DrawDirections();
             for (int i = 0; i < m_AmountOfRows; i++)
             {
                 for (int j = 0; j < m_AmountOfCols; j++)
@@ -76,6 +82,75 @@ public class FlowField : MonoBehaviour
             }
 
         }
+    }
+
+    void ResetNodeDirections()
+    {
+        for (int i = 0; i < m_DebugSprites.Count; i++)
+        {
+            Destroy(m_DebugSprites[i]);
+        }
+    }
+    void DrawDirections()
+    {
+
+        for (int i = 0; i < m_AmountOfRows; i++)
+        {
+            for (int j = 0; j < m_AmountOfCols; j++)
+            {
+                Vector3 currNodeDirection = m_FlowFieldGrid[i, j].directionToEndNode;
+                GameObject debugDirection = new GameObject();
+                m_DebugSprites.Add(debugDirection);
+
+                SpriteRenderer debugSprite = debugDirection.AddComponent<SpriteRenderer>();
+                debugSprite.transform.position = new Vector3(m_FlowFieldGrid[i, j].pos.x - m_NodeSize/2, 0, m_FlowFieldGrid[i, j].pos.z - m_NodeSize/2);
+                debugSprite.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+                debugSprite.sprite = m_DebugSprite;
+                debugSprite.color = Color.blue;
+                //Up
+                if (currNodeDirection == new Vector3(0, 0, 1))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+                //Right
+                else if (currNodeDirection == new Vector3(1, 0, 0))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(90, 90, 0);
+                }
+                //Down
+                else if (currNodeDirection == new Vector3(0, 0, -1))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(90, 180, 0);
+                }
+                //Left
+                else if (currNodeDirection == new Vector3(-1, 0, 0))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(90, -90, 0);
+                }
+                //UpRight
+                else if (currNodeDirection == new Vector3(1, 0, 1))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(90, 45, 0);
+                }
+                //DownRight
+                else if (currNodeDirection == new Vector3(1, 0, -1))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(90, 135, 0);
+                }
+                //DownLeft
+                else if (currNodeDirection == new Vector3(-1, 0, -1))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(90, 225, 0);
+                }
+                //DownLeft
+                else if (currNodeDirection == new Vector3(-1, 0, 1))
+                {
+                    debugSprite.transform.rotation = Quaternion.Euler(90, -45, 0);
+                }
+            }
+        }
+
+
     }
 
     void HandleInput()
@@ -191,7 +266,7 @@ public class FlowField : MonoBehaviour
         {
             //get last node in queue, throw that node out of queue 
             Node currNode = openList.Dequeue();
-            connectedNodes = GetConnectedNodes(currNode, false);
+            connectedNodes = GetConnectedNodes(currNode, false, false);
             for (int i = 0; i < connectedNodes.Count; i++)
             {
                 int gCost = connectedNodes[i].travelCost + currNode.nodeValue;
@@ -205,7 +280,7 @@ public class FlowField : MonoBehaviour
         }
     }
 
-    private List<Node> GetConnectedNodes(Node centerNode, bool isConnectedDiagonal)
+    private List<Node> GetConnectedNodes(Node centerNode, bool isConnectedDiagonal, bool includeOwn)
     {
         List<Node> connectedNodes = new List<Node>();
         List<Vector2Int> connections = new List<Vector2Int>();
@@ -227,6 +302,12 @@ public class FlowField : MonoBehaviour
             connections.Add(new Vector2Int(-1, -1));
             //UpLeft
             connections.Add(new Vector2Int(-1, 1));
+
+        }
+        if(includeOwn)
+        {
+            //Own
+            connections.Add(new Vector2Int(1, 1));
         }
 
         for (int i = 0; i < connections.Count; i++)
@@ -255,15 +336,39 @@ public class FlowField : MonoBehaviour
         pos.x += m_GridSize.x / 2;
         pos.z += m_GridSize.z / 2;
 
-        Debug.Log(Mathf.FloorToInt(0.5f));
-
         float xRatio = Mathf.Clamp(pos.x / (m_AmountOfCols * m_NodeSize), 0,1);
         float yRatio = Mathf.Clamp(pos.z / (m_AmountOfRows * m_NodeSize), 0, 1); //If u think traditional 2d even tho working in z-axis
 
-        int x = Mathf.Clamp((int)((m_AmountOfRows) * yRatio), 0, m_AmountOfRows - 1);
-        int y = Mathf.Clamp((int)((m_AmountOfCols) * xRatio), 0, m_AmountOfCols - 1);
-        return new Vector2Int(x,y);
+        Vector2Int nodeIdx = new Vector2Int(Mathf.Clamp((int)((m_AmountOfRows) * yRatio), 0, m_AmountOfRows - 1), Mathf.Clamp((int)((m_AmountOfCols) * xRatio), 0, m_AmountOfCols - 1));
+        return nodeIdx;
     }
+
+
+    //ALL DIRECTIONS FOR PATH TO ENDNODE
+    void CalculateNodeDirections()
+    {
+        for (int i = 0; i < m_AmountOfRows; i++)
+        {
+            for (int j = 0; j < m_AmountOfCols; j++)
+            {
+                Node currNode = m_FlowFieldGrid[i, j];
+
+                List<Node> connectedNodes = GetConnectedNodes(currNode, true, true);
+                for (int k = 0; k < connectedNodes.Count; k++)
+                {
+                    int nodeValue = currNode.nodeValue;
+                    if(connectedNodes[k].nodeValue < nodeValue)
+                    {
+                        nodeValue = connectedNodes[k].nodeValue;
+                        Vector3 nodeDirection = connectedNodes[k].pos - currNode.pos;
+                        nodeDirection /= m_NodeSize;
+                        currNode.directionToEndNode = nodeDirection;
+                    }
+                }
+            }
+        }
+    }
+
 
     //------------------------DEBUGGING---------------------------
     private void OnDrawGizmos()
@@ -289,9 +394,14 @@ public class FlowField : MonoBehaviour
 
                     //else if (m_FlowFieldGrid[i, j].travelCost == byte.MaxValue)
                     //    Gizmos.color = Color.black;
+
+
+
                     float currNodeValue = m_FlowFieldGrid[i, j].nodeValue;
                     Gizmos.color = new Color(currNodeValue / 10, currNodeValue / 10, currNodeValue / 10);
                     Gizmos.DrawWireCube(currNodePos, nodeSize);
+                    
+
                 }
             }
 
