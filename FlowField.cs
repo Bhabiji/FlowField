@@ -41,6 +41,20 @@ public class FlowField : MonoBehaviour
     private Node m_EndNode;
     private List<GameObject> m_DebugSprites = new List<GameObject>();
 
+    //GETTERS
+    public Node[,] GetNodes()
+    {
+        return m_FlowFieldGrid;
+    }
+    public int GetAmountOfRows()
+    {
+        return m_AmountOfRows;
+    }
+    public int GetAmountOfCols()
+    {
+        return m_AmountOfCols;
+    }
+
 
     private void Start()
     {
