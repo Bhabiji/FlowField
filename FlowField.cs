@@ -74,6 +74,9 @@ public class FlowField : MonoBehaviour
 
         InitGrid();
         InitCostField();
+
+        //Add all agents to the world
+        AgentManager.instance.InitAgents();
     }
 
     private void Update()
@@ -94,8 +97,10 @@ public class FlowField : MonoBehaviour
                     //Debug.Log(m_FlowFieldGrid[i, j].nodeValue);
                 }
             }
-
         }
+
+        //Update the Agents movement
+        AgentManager.instance.FixedUpdate();
     }
 
     void ResetNodeDirections()
@@ -344,7 +349,7 @@ public class FlowField : MonoBehaviour
         return connectedNodes;
     }
 
-    private Vector2Int GetNodeIdxFromWorldPos(Vector3 pos)
+    public Vector2Int GetNodeIdxFromWorldPos(Vector3 pos)
     {
         //Add offset to convert 0,0 origin to leftBottom of gameObject
         pos.x += m_GridSize.x / 2;
