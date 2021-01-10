@@ -12,14 +12,16 @@ public class AgentManager : MonoBehaviour
     [SerializeField]
     FlowField m_FlowField;
     [SerializeField]
-    public float m_MaxLinearSpeed;
-
+    private float m_MaxLinearSpeed;
+    [SerializeField]
+    Material m_debugMat;
     List<GameObject> m_Agents;
 
     // Start is called before the first frame update
     void Awake()
     {
         instance = this;
+        m_Agents = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -27,12 +29,18 @@ public class AgentManager : MonoBehaviour
     {
         for (int i = 0; i < m_Agents.Count; i++)
         {
+            float terrainSpeed = m_MaxLinearSpeed;
+
             Vector2Int currNodeIdx = m_FlowField.GetNodeIdxFromWorldPos(m_Agents[i].transform.position);
             Node currNode = m_FlowField.GetNodes()[currNodeIdx.x, currNodeIdx.y];
+            //Slower terrain effect
+            terrainSpeed /= currNode.travelCost;
 
-            m_Agents[i].GetComponent<Rigidbody>().AddForce(currNode.directionToEndNode * m_MaxLinearSpeed, ForceMode.VelocityChange );
+            m_Agents[i].GetComponent<Rigidbody>().velocity =currNode.directionToEndNode * terrainSpeed * Time.deltaTime;
+            //m_Agents[i].GetComponent<Renderer>().material = m_debugMat;
 
-            if(i==0)
+
+            if (i==0)
             {
                 Debug.Log("Direction Of Node");
                 Debug.Log(currNode.directionToEndNode);
@@ -47,7 +55,7 @@ public class AgentManager : MonoBehaviour
 
     public void InitAgents()
     {
-        m_Agents = new List<GameObject>();
+        
         Node[,] tempFF = m_FlowField.GetNodes();
         int rows = m_FlowField.GetAmountOfRows();
         int cols = m_FlowField.GetAmountOfCols();
@@ -55,14 +63,21 @@ public class AgentManager : MonoBehaviour
 
         for (int i = 0; i < m_AgentAmount; i++)
         {
+            
+            
             Node randomSpawnNode = m_FlowField.GetNodes()[Random.Range(0,rows), Random.Range(0, cols)];
-            GameObject currAgent = m_Agent;
+            //Obstacles cant be spawned upon
+            while (randomSpawnNode.travelCost==255)
+            {
+                randomSpawnNode = m_FlowField.GetNodes()[Random.Range(0, rows), Random.Range(0, cols)];
+            }
 
-            Vector3 newPos = new Vector3(Random.Range(0, randomSpawnNode.pos.x), 0.5f, Random.Range(0, randomSpawnNode.pos.z));
-            currAgent.transform.position = newPos;
+            GameObject currAgent = Instantiate(m_Agent);
+            currAgent.transform.parent = transform;
+            currAgent.transform.position = new Vector3(randomSpawnNode.pos.x, 0.5f, randomSpawnNode.pos.z);
 
             m_Agents.Add(currAgent);
-            Instantiate(m_Agents[m_Agents.Count - 1]);
+         
         }
 
         

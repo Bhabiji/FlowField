@@ -31,6 +31,10 @@ public class FlowField : MonoBehaviour
     [SerializeField]
     private bool m_Debug;
     [SerializeField]
+    private bool m_EnableArrows;
+    [SerializeField]
+    private bool m_EnableTravelCost;
+    [SerializeField]
     private Sprite m_DebugSprite;
 
 
@@ -88,7 +92,10 @@ public class FlowField : MonoBehaviour
             InitCostField();
             HandleInput();
             CalculateNodeDirections();
-            DrawDirections();
+
+            if(m_EnableArrows)
+                DrawDirections();
+
             for (int i = 0; i < m_AmountOfRows; i++)
             {
                 for (int j = 0; j < m_AmountOfCols; j++)
@@ -98,9 +105,9 @@ public class FlowField : MonoBehaviour
                 }
             }
         }
+            AgentManager.instance.FixedUpdate();
 
         //Update the Agents movement
-        AgentManager.instance.FixedUpdate();
     }
 
     void ResetNodeDirections()
@@ -402,22 +409,26 @@ public class FlowField : MonoBehaviour
                     Vector3 currNodePos = m_FlowFieldGrid[i, j].pos;
                     Vector3 nodeSize = Vector3.one * m_NodeSize * 2;
 
-                    //if(m_FlowFieldGrid[i,j].travelCost == 1)
-                    //    Gizmos.color = Color.blue;
-
-                    //else if (m_FlowFieldGrid[i, j].travelCost == 5)
-                    //    Gizmos.color = Color.green;
-
-                    //else if (m_FlowFieldGrid[i, j].travelCost == 10)
-                    //    Gizmos.color = Color.yellow;
-
-                    //else if (m_FlowFieldGrid[i, j].travelCost == byte.MaxValue)
-                    //    Gizmos.color = Color.black;
-
-
 
                     float currNodeValue = m_FlowFieldGrid[i, j].nodeValue;
-                    Gizmos.color = new Color(currNodeValue / 10, currNodeValue / 10, currNodeValue / 10);
+                    Gizmos.color = new Color(currNodeValue / 20, currNodeValue / 20, currNodeValue / 20);
+
+                    if (m_EnableTravelCost)
+                    {
+
+                        //if (m_FlowFieldGrid[i, j].travelCost == 1)
+                        //    Gizmos.color = Color.blue;
+
+                        if (m_FlowFieldGrid[i, j].travelCost == 5)
+                            Gizmos.color = Color.green;
+
+                        else if (m_FlowFieldGrid[i, j].travelCost == 10)
+                            Gizmos.color = Color.yellow;
+
+                        else if (m_FlowFieldGrid[i, j].travelCost == byte.MaxValue)
+                            Gizmos.color = Color.black;
+                    }
+
                     Gizmos.DrawWireCube(currNodePos, nodeSize);
                     
 
