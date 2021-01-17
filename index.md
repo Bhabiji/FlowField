@@ -1,14 +1,14 @@
-## FlowFields, RTS Pathfinding in Unity
+## Flow Fields, RTS Pathfinding in Unity
 ## Introduction
 The charm of an RTS game is, for many, having control over a high amount of units to strategically defeat the opponent.
 Making sure that the player's actions do not get misinterpreted, pathfinding is implemented, which can be very performance heavy for your machine.
 
-To minimize this performance tax while giving a somewhat efficient path to the player's high amount of units, Flowfields can be utilized.
+To minimize this performance tax while giving a somewhat efficient path to the player's high amount of units, Flow fields can be utilized.
 
 ## Less accuracy, more performance
 ### Modern viability
 While Unity is developing a new workflow (ECS/DOTS), which allows for a simpler approach to multi-threading and high performance results, allowing for more accurate pathfinding with a higher amount of units, it is still in a very experimental (nevertheless interesting) state.
-Consequentially Flowfields is so far still a viable option, giving less accuracy but a lower performance tax.
+Consequentially Flow fields is so far still a viable option, giving less accuracy but a lower performance tax.
 
 ### How?
 Originating from the Dijkstra algorithm, A Flowfield exists out of 4 major components:
@@ -20,7 +20,7 @@ Originating from the Dijkstra algorithm, A Flowfield exists out of 4 major compo
 To start your Flowfield journey one must first implement atleast a 2D grid, since the nodes/cells in the grid will be utilized for path calculation.
 The grid I created was given a cell size and calculated how many cells would fit in the 2D plane Gameobject carrying the grid.
 
-## Cost Field
+## 1. Cost Field
 An area can sometimes exist out of different materials, some being easier for units to walk over (grass, asphalt etc.), 
 while others might be more tedious for units (water, mud etc.).
 
@@ -64,7 +64,7 @@ Using simple coditionals, you can add trave costs to corresponding nodes.
     }
 ```
 
-## Integration Field
+## 2. Integration Field
 ### The core of Flowfields
 The integration field is the core of the flow field calculations, deriving from the well known Dijkstra algorithm.
 
@@ -74,7 +74,8 @@ Now we get the node at the start of the open list and set the cost of its neighb
 from the open list + the travelCost of the neighbor node (see Cost Field section).
 This is done until the open list is empty and thus all nodes have their corresponding value.
 
-```Python
+###pseudo code Integration Field
+```C#
 private void InitIntegrationField()
     {
         //A* reset for end node to start the loop
