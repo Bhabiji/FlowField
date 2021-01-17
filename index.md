@@ -32,7 +32,7 @@ Using simple coditionals, you can add trave costs to corresponding nodes.
 
 ![Image of my CostField](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/CostField.JPG)
 ###Pseudo code Cost Field
-```markdown
+```C#
  private void InitCostField()
     {
         int layer = GetAllLayerMasks();
