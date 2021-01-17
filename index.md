@@ -13,15 +13,16 @@ Consequentially Flowfields is so far still a viable option, giving less accuracy
 ### How?
 Originating from the Dijkstra algorithm, A Flowfield exists out of 4 major components:
 - Cost field
-- Vector field
 - Integration field
+- Vector field
 
 ### Grid
 To start your Flowfield journey one must first implement atleast a 2D grid, since the nodes/cells in the grid will be utilized for path calculation.
 The grid I created was given a cell size and calculated how many cells would fit in the 2D plane Gameobject carrying the grid.
 
-### Cost Field
-An area can sometimes exist out of different materials, some being easier for units to walk over (grass, asphalt etc.) while others might be more tedious for/slow units (water, mud etc.).
+## Cost Field
+An area can sometimes exist out of different materials, some being easier for units to walk over (grass, asphalt etc.), 
+while others might be more tedious for units (water, mud etc.).
 
 With Flowfields each gridnode, or grid cell, has a cost, the lower the cost, the "faster" the path.
 This way impenetrable obstacles can be added but also water, mud etc.
@@ -31,7 +32,7 @@ Using simple coditionals, you can add trave costs to corresponding nodes.
 
 
 ![Image of my CostField](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/CostField.JPG)
-###Pseudo code Cost Field
+### Pseudo code Cost Field
 ```C#
  private void InitCostField()
     {
@@ -63,6 +64,46 @@ Using simple coditionals, you can add trave costs to corresponding nodes.
     }
 ```
 
+## Integration Field
+### The core of Flowfields
+The integration field is the core of the flow field calculations, deriving from the well known Dijkstra algorithm.
+
+The integration field is calculated by first setting the value of each cell to a high value. 
+After this the goal node's cost is set to 0 and is pushed to an open list. 
+Now we get the node at the start of the open list and set the cost of its neighboring nodes to the node 
+from the open list + the travelCost of the neighbor node (see Cost Field section).
+This is done until the open list is empty and thus all nodes have their corresponding value.
+
+```Python
+private void InitIntegrationField()
+    {
+        //A* reset for end node to start the loop
+        m_EndNode.nodeValue = 0;
+        m_EndNode.travelCost = 0;
+
+        Queue<Node> openList = new Queue<Node>();
+        openList.Enqueue(m_EndNode);
+
+        List<Node> connectedNodes;
+
+        while there are nodes in openList
+        {
+            //get last node in queue, throw that node out of queue 
+            Node currNode = GetBeginningNodeInOpenList();
+            connectedNodes = GetNeighboringNodes();
+            for all the neighboring Nodes
+            {
+                int gCost = connectedNodes[i].travelCost + currNode.nodeValue;
+                //This will generate the distance values for each node from the end node  and be 65535 for obstacles
+                if gCost is lower than nodeValue of connectedNode
+                {
+                    connectedNodes[i].nodeValue = gCost;
+                    Add connectedNode[i] to openList
+                }
+            }
+        }
+    }
+```
 
 ```markdown
 Syntax highlighted code block
