@@ -28,7 +28,7 @@ This way impenetrable obstacles can be added but also water, mud etc.
 
 In Unity, layer masks can be utilized to easily see if a specific Gridcell is within a specific layer mask, adding its corresponding cost.
 
-<img border="0" alt="Own costfield implementation" src="FlowField/blob/master/Images/CostField.JPG">
+<img border="0" alt="Own costfield implementation" src="blob/master/Images/CostField.JPG">
 ```markdown
 
 ```
