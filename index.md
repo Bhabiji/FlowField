@@ -26,12 +26,41 @@ An area can sometimes exist out of different materials, some being easier for un
 With Flowfields each gridnode, or grid cell, has a cost, the lower the cost, the "faster" the path.
 This way impenetrable obstacles can be added but also water, mud etc.
 
-In Unity, layer masks can be utilized to easily see if a specific Gridcell is within a specific layer mask, adding its corresponding cost.
+In Unity, layer masks can be utilized to easily see if a specific Gridcell is within a specific layer mask.
+Using simple coditionals, you can add trave costs to corresponding nodes.
 
 
 ![Image of my CostField](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/CostField.JPG)
+###Pseudo code Cost Field
 ```markdown
+ private void InitCostField()
+    {
+        int layer = GetAllLayerMasks();
+        //GameObject[] objectsInLayers = FindGameObjectsInLayers(layer);
+        for each row in grid
+        {
+            for each column in grid
+            {
+                Collider[] terrainLayers = GetAllTheCollidersOfCellsCollidingWithLayers()
+                foreach (Collider collider in terrainLayers)
+                {
+                    if collider collides specific layer
+                    {
+                        m_FlowFieldGrid[i, j].travelCost = 5;
+                    }
+                    else if collider collides with other layer
+                    {
+                        m_FlowFieldGrid[i, j].travelCost = 10;
+                    }
+                    else if collider collides with other layer
+                    {
+                        m_FlowFieldGrid[i, j].travelCost = 255; //<--This is a full byte == impassable obstacle
+                    }
 
+                }
+            }
+        }
+    }
 ```
 
 
