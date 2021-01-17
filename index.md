@@ -1,12 +1,14 @@
-## Welcome to GitHub Pages
+## FlowFields, RTS Pathfinding in Unity
+## Introduction
+The charm of an RTS game is, for many, having control over a high amount of units to strategically defeat the opponent.
+Making sure that the player's actions do not get misinterpreted, pathfinding is implemented, which can be very performance heavy for your machine.
+To minimize this performance tax while giving a somewhat efficient path to the player's high amount of units, Flowfields can be utilized.
 
-You can use the [editor on GitHub](https://github.com/Bhabiji/FlowField/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Less accuracy, more performance
+### Modern viability
+While Unity is developing a new workflow (ECS/DOTS), which allows for a simpler approach to multi-threading and high performance results, allowing for more accurate pathfinding with a higher amount of units, it is still in a very experimental (nevertheless interesting) state. Consequentially Flowfields is so far still a viable option, giving less accuracy but a lower performance tax.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+### How?
 
 ```markdown
 Syntax highlighted code block
