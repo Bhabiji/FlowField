@@ -2,13 +2,37 @@
 ## Introduction
 The charm of an RTS game is, for many, having control over a high amount of units to strategically defeat the opponent.
 Making sure that the player's actions do not get misinterpreted, pathfinding is implemented, which can be very performance heavy for your machine.
+
 To minimize this performance tax while giving a somewhat efficient path to the player's high amount of units, Flowfields can be utilized.
 
 ## Less accuracy, more performance
 ### Modern viability
-While Unity is developing a new workflow (ECS/DOTS), which allows for a simpler approach to multi-threading and high performance results, allowing for more accurate pathfinding with a higher amount of units, it is still in a very experimental (nevertheless interesting) state. Consequentially Flowfields is so far still a viable option, giving less accuracy but a lower performance tax.
+While Unity is developing a new workflow (ECS/DOTS), which allows for a simpler approach to multi-threading and high performance results, allowing for more accurate pathfinding with a higher amount of units, it is still in a very experimental (nevertheless interesting) state.
+Consequentially Flowfields is so far still a viable option, giving less accuracy but a lower performance tax.
 
 ### How?
+Originating from the Dijkstra algorithm, A Flowfield exists out of 4 major components:
+- Cost field
+- Vector field
+- Integration field
+
+### Grid
+To start your Flowfield journey one must first implement atleast a 2D grid, since the nodes/cells in the grid will be utilized for path calculation.
+The grid I created was given a cell size and calculated how many cells would fit in the 2D plane Gameobject carrying the grid.
+
+### Cost Field
+An area can sometimes exist out of different materials, some being easier for units to walk over (grass, asphalt etc.) while others might be more tedious for/slow units (water, mud etc.).
+
+With Flowfields each gridnode, or grid cell, has a cost, the lower the cost, the "faster" the path.
+This way impenetrable obstacles can be added but also water, mud etc.
+
+In Unity, layer masks can be utilized to easily see if a specific Gridcell is within a specific layer mask, adding its corresponding cost.
+
+<img border="0" alt="Own costfield implementation" src="FlowField/Images/CostField.JPG">
+```markdown
+
+```
+
 
 ```markdown
 Syntax highlighted code block
