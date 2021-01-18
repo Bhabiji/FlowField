@@ -11,7 +11,7 @@ While Unity is developing a new workflow (ECS/DOTS), which allows for a simpler 
 Consequentially Flow fields is so far still a viable option, giving less accuracy but a lower performance tax.
 
 ### How?
-Originating from the Dijkstra algorithm, A Flowfield exists out of 4 major components:
+Originating from the Dijkstra algorithm, A Flow field exists out of 3 major components:
 - Cost field
 - Integration field
 - Vector field
@@ -66,7 +66,7 @@ Using simple coditionals, you can add trave costs to corresponding nodes.
 
 ## 2. Integration Field
 ### The core of Flowfields
-The integration field is the core of the flow field calculations, deriving from the well known Dijkstra algorithm.
+The integration field is the core of the flow field where the pathfinding calculations are done, deriving from the well known Dijkstra algorithm.
 
 The integration field is calculated by first setting the value of each cell to a high value. 
 After this the goal node's cost is set to 0 and is pushed to an open list. 
