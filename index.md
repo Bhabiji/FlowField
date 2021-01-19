@@ -119,9 +119,21 @@ This was done for each agent.
 
 ### All these elements combined giving the final result
 ![Image of Flow field](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/ezgif.com-gif-maker.gif)
-![Image of Flow field](https://gyazo.com/2bdbd592747c59935556008730f71d57)
+![Image of Flow field](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/GIF2.gif)
 
 ## Conclusion/Discussion
+As you can see both units walking around vs through the slower material arrive at about the same time. With many units still giving high performance RTS' can still utilize Flow fields and using optimizations such as multithreading or using the DOTS/ECS Unity workflow can bring with it mass pathfinding possibilities with a more simplistic approach for less experienced developers. 
+
+Bringing me to personal future interests, while less interested in improving the algorithms themselves, I am more interested in learning/mastering the Unity DOTS workflow to implement more traditional algorithms and test them out in Unity DOTS. I have tried this with Flow fields already but with no success, having different time constraints and an overall lack of knowledge when it comes to this new workflow. 
+
+Over the next few months of writing this dev-blog I will be familiarising myself more with Unity's DOTS way of programming to implement this in what used to be very computation heavy systems, try to integrate it in new technologies (think VR), and help improve documentation (through youtube, github projects etc.) since documentation is definitely lacking.
+
+Specific, planned out future goals:
+-Pong in DOTS
+-PAC-MAN in DOTS
+-A* Pathfinding in DOTS
+-Flow fields in DOTS
+-VR hyper-realistic physics sandbox in DOTS
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ```markdown
