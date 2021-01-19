@@ -118,7 +118,7 @@ The node on which an agent resided was gathered (getting the node's index from t
 This was done for each agent.
 
 ### All these elements combined giving the final result
-![Image of Flow field](https://gyazo.com/cf5c3bb0037fa928b2221f9e2872b8ed)
+![Image of Flow field](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/ezgif.com-gif-maker.gif)
 ![Image of Flow field](https://gyazo.com/2bdbd592747c59935556008730f71d57)
 
 ## Conclusion/Discussion
