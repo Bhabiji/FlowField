@@ -11,10 +11,9 @@ While Unity is developing a new workflow (ECS/DOTS), which allows for a simpler 
 Consequentially Flow fields is so far still a viable option, giving less accuracy but a lower performance tax.
 
 ### How?
-Originating from the Dijkstra algorithm, A Flow field exists out of 3 major components:
+Originating from the Dijkstra algorithm, A Flow field exists out of 2 major components:
 - Cost field
 - Integration field
-- Vector field
 
 ### Grid
 To start your Flowfield journey one must first implement atleast a 2D grid, since the nodes/cells in the grid will be utilized for path calculation.
@@ -106,6 +105,25 @@ private void InitIntegrationField()
     }
 ```
 
+## Flow field
+Having 2 aformentioned components, a Flow field, synonymously called vector field, can be formed.
+The results of the integration field are used to calculate each gridNode's optimal direction towards the goalNode.
+each gridNode's value is compared with all its connected nodes to find the lowest value node, calculating the direction from the current node to the connected node (if the connectedNode's value is lower than the current, thus is closer to the goalNode), and storing that connection within the currentNode, iterating until all node's have a desired direction towards the goalNode.
+![Image of Flow field](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/Flowfield.JPG)
+
+## Basic units
+Now a pathfinding algorithm would be nothing without units testing its efficiency and performance capabilities, thus agents were implemented.
+This agent script was rather simplistic and initialized agents randomly over the entire grid (repositioning them if the given position was on an impenetrable obstacle).
+The node on which an agent resided was gathered (getting the node's index from the worldPos of the agent), then the agent's speed was determined depending on the node's travelCost (higher cost == slower speed). The direction to the goalNode of the node where the agent was positioned on was then used to change the current agent's velocity and
+This was done for each agent.
+
+### All these elements combined giving the final result
+![Image of Flow field](https://gyazo.com/cf5c3bb0037fa928b2221f9e2872b8ed)
+![Image of Flow field](https://gyazo.com/2bdbd592747c59935556008730f71d57)
+
+## Conclusion/Discussion
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ```markdown
 Syntax highlighted code block
 
