@@ -97,16 +97,16 @@ private void InitIntegrationField()
 
         List<Node> connectedNodes;
 
-        while there are nodes in openList
+        while(there are nodes in openList)
         {
             //get last node in queue, throw that node out of queue 
             Node currNode = GetBeginningNodeInOpenList();
             connectedNodes = GetConnectedNodes();
-            for all the Connected Nodes
+            for(all the Connected Nodes)
             {
                 int gCost = connectedNodes[i].travelCost + currNode.nodeValue;
                 //This will generate the distance values for each node from the end node  and be 65535 for obstacles
-                if gCost is lower than nodeValue of connectedNode
+                if(gCost is lower than nodeValue of connectedNode)
                 {
                     connectedNodes[i].nodeValue = gCost;
                     Add connectedNode[i] to openList
