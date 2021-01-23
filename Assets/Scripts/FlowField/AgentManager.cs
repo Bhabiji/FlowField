@@ -34,21 +34,22 @@ public class AgentManager : MonoBehaviour
             Vector2Int currNodeIdx = m_FlowField.GetNodeIdxFromWorldPos(m_Agents[i].transform.position);
             Node currNode = m_FlowField.GetNodes()[currNodeIdx.x, currNodeIdx.y];
             //Slower terrain effect
-            terrainSpeed /= currNode.travelCost;
-
-            m_Agents[i].GetComponent<Rigidbody>().velocity =currNode.directionToEndNode * terrainSpeed * Time.deltaTime;
+            if(currNode.travelCost > 0)
+                terrainSpeed /= currNode.travelCost;
+            if(m_Agents[i] != null)
+                m_Agents[i].GetComponent<Rigidbody>().velocity = currNode.directionToEndNode * terrainSpeed * Time.deltaTime;
             //m_Agents[i].GetComponent<Renderer>().material = m_debugMat;
 
 
-            if (i==0)
-            {
-                Debug.Log("Direction Of Node");
-                Debug.Log(currNode.directionToEndNode);
+            //if (i==0)
+            //{
+            //    Debug.Log("Direction Of Node");
+            //    Debug.Log(currNode.directionToEndNode);
 
-                Debug.Log("Velocity Of Agent");
-                Debug.Log(m_Agents[i].GetComponent<Rigidbody>().velocity);
+            //    Debug.Log("Velocity Of Agent");
+            //    Debug.Log(m_Agents[i].GetComponent<Rigidbody>().velocity);
 
-            }
+            //}
 
         }
     }
