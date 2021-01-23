@@ -6,7 +6,7 @@ Making sure that the player's actions do not get misinterpreted, pathfinding is 
 To minimize this performance tax while giving a somewhat efficient path to the player's high amount of units, Flow fields can be utilized.
 
 ### Modern viability
-While algorithms such as A* dominate the game A.I. market, it is isn't the optimal solution in every scenario. Flowfields are generally more preferred when there's a very dense graph with a high amount of cells/nodes, there are a high amount of units that have to reach the same location and positions of units have to be changed constantly (which is very common in RTS games).
+While algorithms such as A* dominate the game A.I. market, it is isn't the optimal solution in every scenario. Flowfields are generally more preferred when there's a very dense graph with a high amount of cells/nodes, there are a high amount of units that have to reach the same location and when positions of units have to be changed constantly (which is very common in RTS games).
 
 ## How?
 Derived from the Dijkstra algorithm, A Flow field exists out of 2 major components (in order of execution):
