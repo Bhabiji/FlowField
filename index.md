@@ -6,10 +6,10 @@ Making sure that the player's actions do not get misinterpreted, pathfinding is 
 To minimize this performance tax while giving a somewhat efficient path to the player's high amount of units, Flow fields can be utilized.
 
 ### Modern viability
-While algorithms such as A* dominate the game A.I. market, it is very taxing for performance. Flowfields are generally more preferred when there's a very dense graph with a high amount of cells/nodes, there are a high amount of units that have to reach the same location, positions of units have to be changed constantly and if the environment is very dynamic.
+While algorithms such as A* dominate the game A.I. market, it is isn't the optimal solution in every scenario. Flowfields are generally more preferred when there's a very dense graph with a high amount of cells/nodes, there are a high amount of units that have to reach the same location and positions of units have to be changed constantly (which is very common in RTS games).
 
 ## How?
-Originating from the Dijkstra algorithm, A Flow field exists out of 2 major components (in order of execution):
+Derived from the Dijkstra algorithm, A Flow field exists out of 2 major components (in order of execution):
 - Cost field
 - Integration field
 
@@ -71,8 +71,8 @@ find the best directions towards the goal node, keeping their travelCosts in min
 
 The integration field is calculated by first setting the value of each cell to a high value. 
 After this the goal node's value is set to 0 and is pushed to an open list. 
-Now we get the node at the start of the open list and set the value of its neighboring nodes to the node 
-from the open list + the travelCost of the neighbor node (see Cost Field section).
+Now we get the node at the start of the open list and set the value of its connected nodes to the node 
+from the open list + the travelCost of the connected node (see Cost Field section).
 This is done until the open list is empty and thus all nodes have their corresponding value.
 
 So in short:
@@ -80,8 +80,8 @@ So in short:
 1. Set node values to high value
 2. Set goal node value to 0, Add to open list
 3. Get the first node in open list, throw it out of open list
-4. Get gotten node neighbors
-5. Set neighboring node values to gotten node + neighbor node travelCost
+4. Get gotten node connectedNodes
+5. Set connected node values to gotten node + connected node travelCost
 6. Reiterate last 3 steps until open list is empty
 
 ### pseudo code Integration Field
@@ -101,8 +101,8 @@ private void InitIntegrationField()
         {
             //get last node in queue, throw that node out of queue 
             Node currNode = GetBeginningNodeInOpenList();
-            connectedNodes = GetNeighboringNodes();
-            for all the neighboring Nodes
+            connectedNodes = GetConnectedNodes();
+            for all the Connected Nodes
             {
                 int gCost = connectedNodes[i].travelCost + currNode.nodeValue;
                 //This will generate the distance values for each node from the end node  and be 65535 for obstacles
@@ -135,7 +135,7 @@ This was done for each agent.
 ![Image of Flow field](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/GIF2.gif)
 
 ## Conclusion/Discussion
-As you can see both units walking around vs. units going through the slower material arrive at about the same time. The robust and efficient pathfinding is visualized through the usage of many agents and shows the potential for usage in RTS games and fluid simulations.
+As you can see both units walking around vs. units going through the slower material arrive at about the same time. The robust and efficient pathfinding is visualized through the usage of many agents and shows the potential for usage in RTS games and fluid simulations. Positions can be changed constantly, giving a very flexible control.
 
 Bringing me to personal future interests, while less interested in improving the algorithms themselves, I am more interested in learning/mastering the Unity DOTS workflow to implement more traditional algorithms and test them out in Unity DOTS. I have tried this with Flow fields already but with no success, having time constraints at the time of writing and an overall lack of knowledge when it comes to this new workflow, the decision was made to first have a better understanding with traditional implementations of the flowfield. 
 
