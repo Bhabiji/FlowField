@@ -6,7 +6,7 @@ Making sure that the player's actions do not get misinterpreted, pathfinding is 
 To minimize this performance tax while giving a somewhat efficient path to the player's high amount of units, Flow fields can be utilized.
 
 ### Modern viability
-While algorithms such as A* dominate the game A.I. market, it is isn't the optimal solution in every scenario. Flowfields are generally more preferred when there's a very dense graph with a high amount of cells/nodes, there are a high amount of units that have to reach the same location and positions of units have to be changed constantly (which is very common in RTS games).
+While algorithms such as A* dominate the game A.I. market, it is isn't the optimal solution in every scenario. Flowfields are generally more preferred when there's a very dense graph with a high amount of cells/nodes, there are a high amount of units that have to reach the same location and when positions of units have to be changed constantly (which is very common in RTS games).
 
 ## How?
 Derived from the Dijkstra algorithm, A Flow field exists out of 2 major components (in order of execution):
@@ -97,16 +97,16 @@ private void InitIntegrationField()
 
         List<Node> connectedNodes;
 
-        while there are nodes in openList
+        while(there are nodes in openList)
         {
             //get last node in queue, throw that node out of queue 
             Node currNode = GetBeginningNodeInOpenList();
             connectedNodes = GetConnectedNodes();
-            for all the Connected Nodes
+            for(all the Connected Nodes)
             {
                 int gCost = connectedNodes[i].travelCost + currNode.nodeValue;
                 //This will generate the distance values for each node from the end node  and be 65535 for obstacles
-                if gCost is lower than nodeValue of connectedNode
+                if(gCost is lower than nodeValue of connectedNode)
                 {
                     connectedNodes[i].nodeValue = gCost;
                     Add connectedNode[i] to openList
@@ -152,4 +152,3 @@ Specific, planned out future goals (by order of planned):
 ## Bibliography
 - [flow-fields-and-dynamic-obstacle-avoidance](https://bcaptain.wordpress.com/2017/11/24/flow-fields-and-dynamic-obstacle-avoidance/)
 - [howtorts](https://howtorts.github.io/)
-
