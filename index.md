@@ -150,6 +150,6 @@ Specific, planned out future goals (by order of planned):
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Bibliography
-[flow-fields-and-dynamic-obstacle-avoidance](https://bcaptain.wordpress.com/2017/11/24/flow-fields-and-dynamic-obstacle-avoidance/)
-[howtorts](https://howtorts.github.io/)
+- [flow-fields-and-dynamic-obstacle-avoidance](https://bcaptain.wordpress.com/2017/11/24/flow-fields-and-dynamic-obstacle-avoidance/)
+- [howtorts](https://howtorts.github.io/)
 
