@@ -67,7 +67,7 @@ Using simple coditionals, you can add travel costs to nodes that collide with an
 ## 2. Integration Field
 ### The core of Flowfields
 The integration field is the core of the flow field where the pathfinding calculations are done, deriving from the well known Dijkstra algorithm to 
-find the best directions towards the goal node, keeping their travelCosts in mind.
+find the value of each node starting from the goal node, keeping their travelCosts in mind.
 
 The integration field is calculated by first setting the value of each cell to a high value. 
 After this the goal node's value is set to 0 and is pushed to an open list. 
