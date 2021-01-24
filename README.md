@@ -121,6 +121,7 @@ Having 2 aformentioned components, a Flow field, synonymously called vector fiel
 The results of the integration field are used to calculate each gridNode's optimal direction towards the goalNode.
 
 Each gridNode's value is compared with all its connected nodes to find the lowest value node, calculating the direction from the current node to the connected node (if the connectedNode's value is lower than the current, thus is closer to the goalNode), and storing that connection within the currentNode, iterating until all node's have a desired direction towards the goalNode.
+
 ![Image of Flow field](https://raw.githubusercontent.com/Bhabiji/FlowField/master/Images/Flowfield.JPG)
 
 ## Basic units
